@@ -109,7 +109,7 @@ Some email-related utilities. Type ``dhutil mail`` in terminal to get a list of 
 confirm_stat
 ~~~~~~~~~~~~
 
-The ``dhutil mail confirm_stat`` terminal command will print to termintal status regarding how many user got confirmation (not acceptance email):
+The ``dhutil mail confirm_stat`` terminal command will print to termintal how many users got *confirmation* emails (not acceptance emails):
 
 .. code-block:: bash
 
@@ -122,7 +122,7 @@ The ``dhutil mail confirm_stat`` terminal command will print to termintal status
 confirm_send
 ~~~~~~~~~~~~
 
-The ``dhutil mail confirm_send`` terminal command will first print to terminal confirmation emails stats, and then send confirmation emails (not acceptance emails) to any registered user who has not gotten one yet, and will mark them as such. Emails are sent with 50 recipents per-email (to no use up the daily email quota), all BCCed so they can't see who else is CCed:
+The ``dhutil mail confirm_send`` terminal command will first print to terminal confirmation emails stats, and then will send *confirmation* emails (not acceptance emails) to any registered user who has not gotten one yet, and will mark them as such. Emails are sent with 50 recipents per-email (so not to use up the daily email quota), which are all BCCed so they can't see who else is CCed:
 
 .. code-block:: bash
 
