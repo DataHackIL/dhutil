@@ -67,6 +67,21 @@ To enable email access, put an ``email_credentials.json`` file in the ``~/.datah
 These are example values; host and port are correct (for the ZohoMail SMTP server), but you need to put the username and password of the ZohoMail account you want to use to send emails, or put in the details of another SMTP server.
 
 
+Mailchimp
+---------
+
+To enable mail access, put an ``mailchimp_credentials.json`` file in the ``~/.datahack`` folder with the following properties:
+
+.. code-block:: json
+
+{
+  "username": "mchimp_uname",
+  "secret_key": "o8347583489t03894tr29"
+}
+
+These are example values; use the desired username and issue an API key for that user.
+
+
 Use
 ===
 
@@ -84,6 +99,33 @@ When you install ``dhutil`` a command (of the corresponding name) giving access 
 
   Commands:
     mail  Email related commands.
+    mailchimp  MailChimp related commands.
+    mongo  MongoDB related commands.
+
+
+mongo
+-----
+
+Some MOngoDB-related utilities. Type ``dhutil mongo`` in terminal to get a list of the available MOngoDB-related commands:
+
+.. code-block:: bash
+
+  ~ dhutil mongo
+  Usage: dhutil mongo [OPTIONS] COMMAND [ARGS]...
+
+    MongoDB related commands.
+
+  Options:
+    --help  Show this message and exit.
+
+  Commands:
+    user_stats  Print user stats.
+
+
+user_stats
+~~~~~~~~~~
+
+Prints statistics on users in the database.
 
 
 mail
@@ -138,6 +180,20 @@ The ``dhutil mail confirm_send`` terminal command will first print to terminal c
 
   ==========
   1 confirmation emails were sent to 3 users.
+
+
+mailchimp
+---------
+
+lists
+~~~~~
+
+Lists all the mailing lists on the connected account.
+
+sync_reg
+~~~~~~~~
+
+Sync the MailChimp registrants list with the registration system's DB, adding any missing user. Prints a progress bar while doing so.
 
 
 Contributing

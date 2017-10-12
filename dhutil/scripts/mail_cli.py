@@ -2,7 +2,7 @@
 
 import click
 
-from dhutil.operations import (
+from dhutil.mail_ops import (
     _print_email_stats,
     send_confirmation_emails,
 )

@@ -3,6 +3,8 @@
 import click
 
 from .mail_cli import mail
+from .mongo_cli import mongo
+from .mailchimp_cli import mailchimp
 
 
 @click.group(help="A command-line interface for dhutil.")
@@ -12,3 +14,5 @@ def cli():
 
 
 cli.add_command(mail)
+cli.add_command(mongo)
+cli.add_command(mailchimp)
