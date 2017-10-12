@@ -29,7 +29,7 @@ Install ``dhutil`` with:
 Configure
 =========
 
-``dhutil`` uses configuration files located at a folder named ``.datahack`` in your home folder (i.e. ``~/.datahack``). Create this folder and populated it with the following mentioned files.
+``dhutil`` uses configuration files located at a folder named ``.datahack`` in your home folder (i.e. ``~/.datahack``). Create this folder and populate it with the desired files.
 
 
 MongoDB
@@ -47,7 +47,7 @@ To enable MongoDB access, put a ``mongodb_credentials.json`` file in the ``~/.da
     "authSource": "db_name"
   }
 
-These are example values; you need to use the host and port supplied by mlab, a username and password of a user created inside that mlab database (not the username and password used to log in to mlab!), and the name of that database as the ``authSource`` parameter.
+These are example values; you need to use the database-specific host and port supplied by *mlab*, a username and password of a user created inside that *mlab* database (not the username and password used to log into *mlab*!), and the name of that database as the ``authSource`` parameter.
 
 
 Email
@@ -70,7 +70,7 @@ These are example values; host and port are correct (for the ZohoMail SMTP serve
 Use
 ===
 
-When you install ``dhutil`` a command (of the corresponding name) giving access to its CLI is installed in you system. Type ``dhutil`` in terminal to get a list of the available sub-commands:
+When you install ``dhutil`` a command (of the corresponding name) giving access to its CLI is installed on your system. Type ``dhutil`` in terminal to get a list of the available sub-commands:
 
 .. code-block:: bash
 
@@ -79,11 +79,11 @@ When you install ``dhutil`` a command (of the corresponding name) giving access 
 
   A command-line interface for dhutil.
 
-Options:
-  --help  Show this message and exit.
+  Options:
+    --help  Show this message and exit.
 
-Commands:
-  mail  Email related commands.
+  Commands:
+    mail  Email related commands.
 
 
 mail
