@@ -1,4 +1,4 @@
-"""Python utilities for DataHack.""""
+"""Python utilities for DataHack."""
 
 
 from ._version import get_versions

@@ -1,16 +1,15 @@
 dhutil
-#########
-|PyPI-Status| |PyPI-Versions| |Build-Status| |Codecov| |LICENCE|
+######
+|PyPI-Status| |PyPI-Versions| |LICENCE|
 
-A small pure-python package for data dhutilure related utility functions.
+Python utils for DataHack.
 
-.. code-block:: python
+.. code-block:: bash
 
-  from dhutil.dict import get_nested_val
-
-  >>> dict_obj = {'a': {'b': 7}}
-  >>> get_nested_val(('a', 'b'), dict_obj)
-  7
+  ~ dhutil mail confirm_stat
+  Emails stas on DataHack 2017 registration:
+  432 total users in the system.
+  415 users got a confirmation email.
 
 .. contents::
 
@@ -27,33 +26,118 @@ Install ``dhutil`` with:
   pip install dhutil
 
 
+Configure
+=========
+
+``dhutil`` uses configuration files located at a folder named ``.datahack`` in your home folder (i.e. ``~/.datahack``). Create this folder and populated it with the following mentioned files.
+
+
+MongoDB
+-------
+
+To enable MongoDB access, put a ``mongodb_credentials.json`` file in the ``~/.datahack`` folder with the following properties:
+
+.. code-block:: json
+
+  {
+    "host": "ds162883.mlab.com",
+    "port": "26552",
+    "usr": "some_user",
+    "pwd": "pAsswOrd",
+    "authSource": "db_name"
+  }
+
+These are example values; you need to use the host and port supplied by mlab, a username and password of a user created inside that mlab database (not the username and password used to log in to mlab!), and the name of that database as the ``authSource`` parameter.
+
+
+Email
+-----
+
+To enable email access, put an ``email_credentials.json`` file in the ``~/.datahack`` folder with the following properties:
+
+.. code-block:: json
+
+  {
+      "host": "smtp.zoho.com",
+      "port": "587",
+      "usr": "zoho_username",
+      "pwd": "wOwPassWord"
+  }
+
+These are example values; host and port are correct (for the ZohoMail SMTP server), but you need to put the username and password of the ZohoMail account you want to use to send emails, or put in the details of another SMTP server.
+
+
 Use
 ===
 
-``dhutil`` is divided into four sub-modules.
+When you install ``dhutil`` a command (of the corresponding name) giving access to its CLI is installed in you system. Type ``dhutil`` in terminal to get a list of the available sub-commands:
 
-dict
+.. code-block:: bash
+
+  ~ dhutil
+  Usage: dhutil [OPTIONS] COMMAND [ARGS]...
+
+  A command-line interface for dhutil.
+
+Options:
+  --help  Show this message and exit.
+
+Commands:
+  mail  Email related commands.
+
+
+mail
 ----
 
-Getting values from nested dicts in various ways; operations on number-valued dicts; merging, normalizing, reversing and printing dicts (nicely)
+Some email-related utilities. Type ``dhutil mail`` in terminal to get a list of the available email-related commands:
+
+.. code-block:: bash
+
+  ~ dhutil mail
+  Usage: dhutil mail [OPTIONS] COMMAND [ARGS]...
+
+    Email related commands.
+
+  Options:
+    --help  Show this message and exit.
+
+  Commands:
+    confirm_send  Send confirmation emails.
+    confirm_stat  Status of confirmation emails.
 
 
-list
-----
+confirm_stat
+~~~~~~~~~~~~
 
-Index and element shifts that preserve order.
+The ``dhutil mail confirm_stat`` terminal command will print to termintal status regarding how many user got confirmation (not acceptance email):
+
+.. code-block:: bash
+
+  ~ dhutil mail confirm_stat
+  Emails stas on DataHack 2017 registration:
+  432 total users in the system.
+  415 users got a confirmation email.
 
 
-set
----
+confirm_send
+~~~~~~~~~~~~
 
-Getting a set element by a priority list.
+The ``dhutil mail confirm_send`` terminal command will first print to terminal confirmation emails stats, and then send confirmation emails (not acceptance emails) to any registered user who has not gotten one yet, and will mark them as such. Emails are sent with 50 recipents per-email (to no use up the daily email quota), all BCCed so they can't see who else is CCed:
 
+.. code-block:: bash
 
-sortedlist
-----------
+  ~ dhutil mail confirm_send
+  Emails stas on DataHack 2017 registration:
+  250 total users in the system.
+  247 users got a confirmation email.
+  Sending confirmation emails to all non-confirmed users.
+  Sending a confirmation email to the following addresses:
+  ['test.tesi@test.com', 'second.example@gmail.com', 'third@gmail.com']
+  Email sent successfully
+  Users marked as confirmed on MongoDB
 
-Operations on sortedcontainers.SortedList objects.
+  ==========
+  1 confirmation emails were sent to 3 users.
 
 
 Contributing
@@ -68,7 +152,7 @@ Clone:
 
 .. code-block:: bash
 
-  git clone git@github.com:shaypal5/dhutil.git
+  git clone git@github.com:DataHackIL/dhutil.git
 
 
 Install in development mode with test dependencies:
@@ -82,11 +166,11 @@ Install in development mode with test dependencies:
 Running the tests
 -----------------
 
-To run the tests, use:
+To run the tests (none at the moment), use
 
 .. code-block:: bash
 
-  python -m pytest --cov=dhutil --doctest-modules
+  python -m pytest --cov=dhutil
 
 
 Adding documentation
@@ -108,11 +192,5 @@ Created by Shay Palachy  (shay.palachy@gmail.com).
 .. |PyPI-Versions| image:: https://img.shields.io/pypi/pyversions/dhutil.svg
    :target: https://pypi.python.org/pypi/dhutil
 
-.. |Build-Status| image:: https://travis-ci.org/shaypal5/dhutil.svg?branch=master
-  :target: https://travis-ci.org/shaypal5/dhutil
-
 .. |LICENCE| image:: https://img.shields.io/pypi/l/dhutil.svg
   :target: https://pypi.python.org/pypi/dhutil
-
-.. |Codecov| image:: https://codecov.io/github/shaypal5/dhutil/coverage.svg?branch=master
-   :target: https://codecov.io/github/shaypal5/dhutil?branch=master

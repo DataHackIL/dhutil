@@ -62,6 +62,7 @@ def send_confirmation_emails(limit=None):
     users_to_send = users.find({CONFIRM_STR: {'$ne': True}})
     batch = []
     total = 0
+    emails = 0
     while True:
         try:
             user = users_to_send.__next__()
@@ -69,9 +70,12 @@ def send_confirmation_emails(limit=None):
         except StopIteration:
             if batch:
                 _send_confirmation_email(batch)
+                emails +=1
             break
         batch.append(user['email'])
         if len(batch) == ZOHO_MAX_RECIPIENTS:
             _send_confirmation_email(batch)
+            emails += 1
             batch = []
-    print("\n===========\n{} confirmation emails were sent.".format(total))
+    print("\n==========\n{} confirmation emails were sent to {} users.".format(
+        emails, total))
