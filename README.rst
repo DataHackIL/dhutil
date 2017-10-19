@@ -76,10 +76,31 @@ To enable mail access, put an ``mailchimp_credentials.json`` file in the ``~/.da
 
 {
   "username": "mchimp_uname",
-  "secret_key": "o8347583489t03894tr29"
+  "secret_key": "o8347583489t03894tr29",
+  "registrants_list_id": "9uy24hw9fue",
+  "accepted_list_id": "208dj2dj2"
 }
 
-These are example values; use the desired username and issue an API key for that user.
+These are example values; use the desired username and issue an API key for that user. Also take the actual ids of the registrants and accepted MailChimp lists.
+
+
+Google Drive
+------------
+
+To enable Google Drive access, follow the instructions here to create a service account with Google Drive access, and create a json key file for it.
+
+Place this file in the ``~/.datahack`` folder, and rename it to ``google_drive_service_account_key.json``.
+
+Don't forget to follow all the above instructions, including sharing your spreadsheet with an email you have in your ``json_key['client_email']`` (Otherwise you’ll get a SpreadsheetNotFound exception when trying to open it).
+
+Additionally, create ``google_drive_cfg.json`` file at the ``~/.datahack`` folder, and populate it with the key of the users spreadsheet, and the name of the specific worksheet within it in which users are listed:
+
+.. code-block:: json
+
+{
+    "users_spreadsheet_key": "08924ufo8u2ndfuqihdo7g23dfh",
+    "users_worksheet_name": "Users"
+}
 
 
 Use
@@ -194,6 +215,15 @@ sync_reg
 ~~~~~~~~
 
 Sync the MailChimp registrants list with the registration system's DB, adding any missing user. Prints a progress bar while doing so.
+
+
+drive
+-----
+
+sync_accepted
+~~~~~~~~~~~~~
+
+Sync Google Drive acceptance status to MongoDB.
 
 
 Contributing

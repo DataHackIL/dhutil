@@ -10,6 +10,7 @@ from decore import lazy_property
 from mailchimp3 import MailChimp
 
 from .mongo_utils import _get_mongo_database
+from .shared import IS_ACCEPTED_FIELD_NAME
 
 
 
@@ -43,10 +44,16 @@ def _registrants_list_id():
     return cred['registrants_list_id']
 
 
-def _get_all_registrants_emails():
+@lazy_property
+def _accepted_list_id():
+    cred = _get_credentials()
+    return cred['accepted_list_id']
+
+
+def _get_all_emails_by_list_id(list_id):
     client = get_mailchimp_client()
     result = client.lists.members.all(
-        _registrants_list_id(), get_all=True, fields="members.email_address")
+        list_id, get_all=True, fields="members.email_address")
     return [item['email_address'] for item in result['members']]
 
 
@@ -86,11 +93,11 @@ def _add_user_to_registrants_list(user):
         #     print("Didn't work. Moving on.")
 
 
-def sync_mailchimp():
+def sync_mailchimp_registrants():
     """Sync the MailChimp registrants list with registration DB."""
     print("Syncing the MailChimp registrants list with registration DB.")
     users = _get_mongo_database()['users']
-    emails_in_list = _get_all_registrants_emails()
+    emails_in_list = _get_all_emails_by_list_id(_registrants_list_id())
     users_to_add = users.find({'email': {'$nin': emails_in_list}})
     num_users_to_add = users.count({'email': {'$nin': emails_in_list}})
     with tqdm(total=num_users_to_add) as pbar:
@@ -99,3 +106,35 @@ def sync_mailchimp():
             pbar.update(1)
 
 
+def _add_user_to_accepted_list(user):
+    # print(user)
+    client = get_mailchimp_client()
+    data = {
+        'email_address': user['email'],
+        'status': 'subscribed',
+        'update_existing': True,
+        'send_welcome': False,
+        'merge_fields': {},
+    }
+    try:
+        client.lists.members.create(_accepted_list_id(), data)
+    except requests.exceptions.HTTPError:
+        print('Adding user with the following data failed:')
+        print(data)
+
+
+def sync_mailchimp_accepted():
+    """Sync the MailChimp accepted list with registration DB."""
+    print("Syncing the MailChimp accepted list with registration DB.")
+    users = _get_mongo_database()['users']
+    emails_in_list = _get_all_emails_by_list_id(_accepted_list_id())
+    accepted_to_add_matchop = {
+        IS_ACCEPTED_FIELD_NAME: True,
+        'email': {'$nin': emails_in_list}
+    }
+    users_to_add = users.find(accepted_to_add_matchop)
+    num_users_to_add = users.count(accepted_to_add_matchop)
+    with tqdm(total=num_users_to_add) as pbar:
+        for user in users_to_add:
+            _add_user_to_accepted_list(user)
+            pbar.update(1)

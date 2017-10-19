@@ -5,6 +5,7 @@ import click
 from dhutil.mail_ops import (
     _print_email_stats,
     send_confirmation_emails,
+    send_acceptance_emails,
 )
 
 
@@ -24,3 +25,9 @@ def confirm_stat():
 def confirm_send():
     """Send confirmation emails."""
     send_confirmation_emails()
+
+
+@mail.command(help="Send acceptance emails.")
+def accept_send():
+    """Send acceptance emails."""
+    send_acceptance_emails()

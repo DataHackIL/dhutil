@@ -42,3 +42,8 @@ def _get_mongodb_client():
 
 def _get_mongo_database():
     return _get_mongodb_client()['datahack']
+
+
+def get_users_collection():
+    """Returns the DataHack users collection."""
+    return _get_mongo_database()['users']

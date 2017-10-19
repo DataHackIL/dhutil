@@ -1,12 +1,17 @@
 """Python based utilities for DataHack."""
 
-from mongozen.queries.common import key_value_counts
+import os
+import csv
+from subprocess import call
 from itertools import zip_longest
+
+from tqdm import tqdm
+from mongozen.queries.common import key_value_counts
 
 from .mongo_utils import (
     _get_mongo_database,
 )
-from .mail_ops import CONFIRM_STR
+from .mail_ops import CONFIRM_FIELD_NAME
 
 
 def pprint_ordered_dict(odict):
@@ -39,7 +44,7 @@ def print_user_stats():
     users = _get_mongo_database()['users']
     print("{} total users in the system.".format(users.count()))
     print("{} users got a confirmation email.".format(
-        users.count({CONFIRM_STR: True})))
+        users.count({CONFIRM_FIELD_NAME: True})))
     pprint_two_ordered_dicts(
         'Gender', key_value_counts('gender', users),
         'Food', key_value_counts('food', users),
@@ -65,6 +70,32 @@ def print_user_stats():
         'Newsletter', key_value_counts('newsletter', users),
     )
 
-    # print("Degree:")
-    # print("=======")
-    # pprint_ordered_dict(key_value_counts('degree', users))
+
+def dump_collection(collection_name, field_names, output_folder_path):
+    """Dump the given collection."""
+    collection = _get_mongo_database()[collection_name]
+    count = collection.count()
+    cursor = collection.find(
+        filter={},
+        projection={'_id': 0, **{name: 1 for name in field_names}},
+    )
+    fpath = os.path.join(output_folder_path, 'dh_users.csv')
+    with tqdm(total=count) as pbar:
+        with open(fpath, 'w+') as outfile:
+            writer = csv.DictWriter(outfile, fieldnames=field_names)
+            writer.writeheader()
+            for x in cursor:
+                writer.writerow(x)
+                pbar.update(1)
+
+
+USERS_FIELD_NAMES = [
+    'first_name', 'last_name', 'gender', 'email', 'degree', 'field',
+    'institution', 'teamstatus', 'team', 'workshop', 'bus', 'hacker',
+    'shirttype', 'shirtsize', 'food', 'sleep', 'student', 'class', 'transport'
+    'newsletter', 'age', 'phone', 'regDate', 'tags',
+]
+
+def dump_users_collection(output_folder_path):
+    """Dump the users collection."""
+    dump_collection('users', USERS_FIELD_NAMES, output_folder_path)
