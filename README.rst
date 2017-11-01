@@ -74,12 +74,12 @@ To enable mail access, put an ``mailchimp_credentials.json`` file in the ``~/.da
 
 .. code-block:: json
 
-{
-  "username": "mchimp_uname",
-  "secret_key": "o8347583489t03894tr29",
-  "registrants_list_id": "9uy24hw9fue",
-  "accepted_list_id": "208dj2dj2"
-}
+        {
+          "username": "mchimp_uname",
+          "secret_key": "o8347583489t03894tr29",
+          "registrants_list_id": "9uy24hw9fue",
+          "accepted_list_id": "208dj2dj2"
+        }
 
 These are example values; use the desired username and issue an API key for that user. Also take the actual ids of the registrants and accepted MailChimp lists.
 

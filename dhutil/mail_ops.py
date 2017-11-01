@@ -22,11 +22,12 @@ def _print_email_stats():
 
 
 def _set_field_true_by_emails(emails, field_name):
-    users = _get_mongo_database()['users']
-    users.update_many(
-        filter={'email': {'$in': emails}},
-        update={'$set': {field_name: True}},
-    )
+    if field_name:
+        users = _get_mongo_database()['users']
+        users.update_many(
+            filter={'email': {'$in': emails}},
+            update={'$set': {field_name: True}},
+        )
 
 
 def _send_batch_email(emails, subject, body, field_name):

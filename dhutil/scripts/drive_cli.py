@@ -5,6 +5,7 @@ import click
 from dhutil.drive_ops import (
     sync_google_drive_acceptance_status_to_mongo,
     sync_uptodate_teams_from_mongo,
+    send_conf_confirm_emails,
 )
 
 
@@ -28,3 +29,11 @@ _SYNC_TEAM_MSG = "Sync Google Drive user team from MongoDB"
 def sync_team():
     __doc__ = _SYNC_TEAM_MSG # pylint: disable=W0622
     sync_uptodate_teams_from_mongo()
+
+
+_CONF_CONFORM_MSG = "Send DataConf confirmation email."
+
+@drive.command(help=_CONF_CONFORM_MSG)
+def conf_confirm():
+    __doc__ = _CONF_CONFORM_MSG # pylint: disable=W0622
+    send_conf_confirm_emails()

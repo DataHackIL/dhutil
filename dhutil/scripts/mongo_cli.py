@@ -5,6 +5,7 @@ import click
 from dhutil.mongo_ops import (
     print_user_stats,
     dump_users_collection,
+    dump_teams_collection,
 )
 
 
@@ -25,3 +26,9 @@ def user_stats():
 def dump_users(output):
     """Dump the users collection."""
     dump_users_collection(output)
+
+@mongo.command(help="Dump the teams collection.")
+@click.option('--output', '-o', type=str)
+def dump_teams(output):
+    """Dump the teams collection."""
+    dump_teams_collection(output)

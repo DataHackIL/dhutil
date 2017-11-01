@@ -44,14 +44,27 @@ def get_spreadsheet_as_dataframe(worksheet_obj):
     return pd.DataFrame(list_of_lists, columns=headers)
 
 
+def get_drive_worksheet(spreadsheet_key, worksheet_name):
+    """Returns the given worksheet object."""
+    gspread = get_authenticated_gspread()
+    spreadsheet = gspread.open_by_key(spreadsheet_key)
+    return spreadsheet.worksheet(worksheet_name)
+
+
 def get_drive_users_worksheet():
     """Returns the users worksheet object."""
     cfg = _get_gdrive_cfg()
     spreadsheet_key = cfg['users_spreadsheet_key']
     worksheet_name = cfg['users_worksheet_name']
-    gspread = get_authenticated_gspread()
-    dh_users = gspread.open_by_key(spreadsheet_key)
-    return dh_users.worksheet(worksheet_name)
+    return get_drive_worksheet(spreadsheet_key, worksheet_name)
+
+
+def get_drive_conf_worksheet():
+    """Returns the DataConf participants worksheet object."""
+    cfg = _get_gdrive_cfg()
+    spreadsheet_key = cfg['conf_spreadsheet_key']
+    worksheet_name = cfg['conf_worksheet_name']
+    return get_drive_worksheet(spreadsheet_key, worksheet_name)
 
 
 def get_drive_users_dataframe():
@@ -78,8 +91,15 @@ def header_to_number(worksheet):
     return {header: i+1 for i, header in enumerate(headers)}
 
 
-def get_emails_from_worksheet(worksheet):
+def get_col_from_worksheet(worksheet, col_header, val_filter=None):
+    if val_filter is None:
+        val_filter = lambda x: True
     header_to_num = header_to_number(worksheet)
-    emails_col = worksheet.col_values(header_to_num['email'])
-    emails_col = emails_col[1:]
-    return [email for email in emails_col if email != '']
+    col = worksheet.col_values(header_to_num[col_header])
+    col = col[1:] # cut headers
+    return [val for val in col if val_filter(val)]
+
+
+def get_emails_from_worksheet(worksheet, email_header='email'):
+    email_filter = lambda x: x != ''
+    return get_col_from_worksheet(worksheet, email_header, email_filter)

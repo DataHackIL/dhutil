@@ -79,7 +79,8 @@ def dump_collection(collection_name, field_names, output_folder_path):
         filter={},
         projection={'_id': 0, **{name: 1 for name in field_names}},
     )
-    fpath = os.path.join(output_folder_path, 'dh_users.csv')
+    fpath = os.path.join(output_folder_path, 'dh_{}.csv'.format(
+        collection_name))
     with tqdm(total=count) as pbar:
         with open(fpath, 'w+') as outfile:
             writer = csv.DictWriter(outfile, fieldnames=field_names)
@@ -99,3 +100,13 @@ USERS_FIELD_NAMES = [
 def dump_users_collection(output_folder_path):
     """Dump the users collection."""
     dump_collection('users', USERS_FIELD_NAMES, output_folder_path)
+
+
+TEAMS_FIELD_NAMES = [
+    'team_name', 'admin_email', 'members', 'isClosed', 'idea', 'challenge',
+    'dataset', 'lookingText', 'tags',
+]
+
+def dump_teams_collection(output_folder_path):
+    """Dump the teams collection."""
+    dump_collection('teams', TEAMS_FIELD_NAMES, output_folder_path)
