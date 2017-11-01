@@ -97,10 +97,10 @@ Additionally, create ``google_drive_cfg.json`` file at the ``~/.datahack`` folde
 
 .. code-block:: json
 
-{
-    "users_spreadsheet_key": "08924ufo8u2ndfuqihdo7g23dfh",
-    "users_worksheet_name": "Users"
-}
+        {
+            "users_spreadsheet_key": "08924ufo8u2ndfuqihdo7g23dfh",
+            "users_worksheet_name": "Users"
+        }
 
 
 Use
