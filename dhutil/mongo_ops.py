@@ -34,6 +34,7 @@ def pprint_two_ordered_dicts(name1, odict1, name2, odict2):
             max_val_len1+1)+'}     {'+':{}'.format(
                 max_key_len2+1)+'}: {}'
     # print(line_fmt_str)
+    print()
     print(header_fmt_str.format(name1, '', name2))
     for key1, key2 in zip_longest(odict1.keys(), odict2.keys(), fillvalue=''):
         print(line_fmt_str.format(
@@ -54,11 +55,11 @@ def print_user_stats():
         'Transport', key_value_counts('transport', users),
     )
     pprint_two_ordered_dicts(
-        'Workshop', key_value_counts('workshop', users),
+        'Track', key_value_counts('track', users),
         'TLV Bus', key_value_counts('bus', users),
     )
     pprint_two_ordered_dicts(
-        'Class', key_value_counts('class', users),
+        'Shirt Type', key_value_counts('shirttype', users),
         'Shirt size', key_value_counts('shirtsize', users),
     )
     pprint_two_ordered_dicts(

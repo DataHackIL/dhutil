@@ -13,7 +13,7 @@ from .shared import (
 
 def _print_email_stats():
     users = _get_mongo_database()['users']
-    print("Emails stas on DataHack 2017 registration:")
+    print("Emails stats on DataHack 2018 registration:")
     print("{} total users in the system.".format(users.count()))
     print("{} users got a confirmation email.".format(
         users.count({CONFIRM_FIELD_NAME: True})))
@@ -74,13 +74,20 @@ def send_batch_emails(emails, subject, body, field_name):
 
 
 CONFIRM_FIELD_NAME = 'confirmation_email'
-CONFIRM_SUBJECT = "Your registration for DataHack 2017 is confirmed!"
-CONFIRM_BODY = (
-    "This is a message confirming you registration form for DataHack 2017"
-    " has been processed.\n This does not confirm your participation in the"
-    " event. Confirmation emails for participation will go out at a later"
-    " date."
-)
+CONFIRM_SUBJECT = "Your are now registered for DataHack 2018"
+CONFIRM_BODY = """
+You have successfully registered for DataHack 2018!
+This does not yet confirm your participation in the event.
+
+What Now?
+* Sit tight
+* Brush your hacking skills
+* Patiently wait for a confirmation mail saying you've been accepted.
+This will probably happen a few days after registration is closed.
+
+Thanks,
+DataHack 2018 Team
+"""
 
 
 def send_confirmation_emails():

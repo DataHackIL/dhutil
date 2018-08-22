@@ -41,7 +41,7 @@ def _get_mongodb_client():
 
 
 def _get_mongo_database():
-    return _get_mongodb_client()['datahack']
+    return _get_mongodb_client()['datahack-reg']
 
 
 def get_users_collection():

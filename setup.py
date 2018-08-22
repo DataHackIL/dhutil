@@ -16,7 +16,7 @@ with open('README.rst') as f:
     README_RST = f.read()
 
 INSTALL_REQUIRES = [
-    'pymongo', 'click', 'mailchimp3', 'tqdm', 'gspread', 'oauth2client',
+    'pymongo', 'click', 'mailchimp3', 'tqdm', 'gspread', 'oauth2client', 'mongozen'
 ]
 TEST_REQUIRES = ['pytest', 'coverage', 'pytest-cov']
 
