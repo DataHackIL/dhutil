@@ -3,11 +3,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-try:
-    from setuptools import setup
-except ImportError:
-    from distutils.core import setup
-
+import setuptools
 import versioneer
 
 
@@ -21,7 +17,7 @@ INSTALL_REQUIRES = [
 TEST_REQUIRES = ['pytest', 'coverage', 'pytest-cov']
 
 
-setup(
+setuptools.setup(
     name='dhutil',
     description=("Python utilities for DataHack."),
     long_description=README_RST,
@@ -31,7 +27,7 @@ setup(
     cmdclass=versioneer.get_cmdclass(),
     url='https://github.com/DataHackIL/dhutil',
     license="MIT",
-    packages=['dhutil'],
+    packages=setuptools.find_packages(),
     entry_points='''
         [console_scripts]
         dhutil=dhutil.scripts.dhutil_cli:cli
