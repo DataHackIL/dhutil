@@ -106,3 +106,6 @@ ENV/
 
 
 *sandbox*
+
+# vim swap files
+*.swp
