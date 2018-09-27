@@ -87,9 +87,12 @@ def dump_collection(collection_name, field_names, output_folder_path):
             writer = csv.DictWriter(outfile, fieldnames=field_names)
             writer.writeheader()
             for x in cursor:
-                writer.writerow(x)
-                pbar.update(1)
-
+                try:
+                    writer.writerow(x)
+                    pbar.update(1)
+                except UnicodeEncodeError:
+                    print("problem encoding the following row:")
+                    print(x)
 
 USERS_FIELD_NAMES = [
     'first_name', 'last_name', 'gender', 'email', 'degree', 'field',
