@@ -87,7 +87,7 @@ These are example values; use the desired username and issue an API key for that
 Google Drive
 ------------
 
-To enable Google Drive access, follow the instructions here to create a service account with Google Drive access, and create a json key file for it.
+To enable Google Drive access, follow the `instructions here <https://github.com/burnash/gspread>`_ to create a service account with Google Drive access, and create a json key file for it.
 
 Place this file in the ``~/.datahack`` folder, and rename it to ``google_drive_service_account_key.json``.
 
