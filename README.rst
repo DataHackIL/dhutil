@@ -44,7 +44,9 @@ To enable MongoDB access, put a ``mongodb_credentials.json`` file in the ``~/.da
     "port": "26552",
     "usr": "some_user",
     "pwd": "pAsswOrd",
-    "authSource": "db_name"
+    "authSource": "db_name",
+    "srv": true,
+    "db": "test"
   }
 
 These are example values; you need to use the database-specific host and port supplied by *mlab*, a username and password of a user created inside that *mlab* database (not the username and password used to log into *mlab*!), and the name of that database as the ``authSource`` parameter.

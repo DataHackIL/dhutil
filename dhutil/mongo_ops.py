@@ -8,10 +8,10 @@ from itertools import zip_longest
 from tqdm import tqdm
 from mongozen.queries.common import key_value_counts
 
-from .mongo_utils import (
+from dhutil.mongo_utils import (
     _get_mongo_database,
 )
-from .mail_ops import CONFIRM_FIELD_NAME
+from dhutil.mail_ops import CONFIRM_FIELD_NAME
 
 
 def pprint_ordered_dict(odict):
@@ -37,15 +37,18 @@ def pprint_two_ordered_dicts(name1, odict1, name2, odict2):
     print()
     print(header_fmt_str.format(name1, '', name2))
     for key1, key2 in zip_longest(odict1.keys(), odict2.keys(), fillvalue=''):
-        print(line_fmt_str.format(
-            key1, odict1.get(key1, ''), key2, odict2.get(key2, '')))
+        v1 = odict1.get(key1, '')
+        v2 = odict2.get(key2, '')
+        k1 = '' if key1 is None else key1
+        k2 = '' if key2 is None else key2
+        print(line_fmt_str.format(k1, v1, k2, v2))
 
 
 def print_user_stats():
-    users = _get_mongo_database()['users']
-    print("{} total users in the system.".format(users.count()))
-    print("{} users got a confirmation email.".format(
-        users.count({CONFIRM_FIELD_NAME: True})))
+    db = _get_mongo_database()
+    users = db['users']
+    print("{} total users in the system.".format(users.count_documents({})))
+    print("{} users got a confirmation email.".format(users.count_documents({CONFIRM_FIELD_NAME: True})))
     pprint_two_ordered_dicts(
         'Gender', key_value_counts('gender', users),
         'Food', key_value_counts('food', users),

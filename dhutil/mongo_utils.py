@@ -7,7 +7,6 @@ from functools import lru_cache
 
 import pymongo
 
-
 CRED_DIR_PATH = os.path.expanduser('~/.datahack/')
 CRED_FNAME = 'mongodb_credentials.json'
 
@@ -18,30 +17,29 @@ def _get_credentials():
         return json.load(cred_file)
 
 
-MONGODB_URI = "mongodb://{usr}:{pwd}@{host}:{port}"
 
 
 def _get_mongodb_uri():
     cred = _get_credentials()
-    return MONGODB_URI.format(
-        usr=quote_plus(cred['usr']),
-        pwd=quote_plus(cred['pwd']),
-        host=cred['host'],
-        port=cred['port'],
-    )
+    srv = cred['srv']
+    if srv:
+        uri = 'mongodb+srv://{usr}:{pwd}@{host}/{authSource}'
+    else:
+        uri = 'mongodb://{usr}:{pwd}@{host}:{port}/{authSource}'
+    uri = uri.format_map(cred)
+    return uri
 
 
 @lru_cache(maxsize=2)
 def _get_mongodb_client():
-    cred = _get_credentials()
-    return pymongo.MongoClient(
-        host=_get_mongodb_uri(),
-        authSource=cred['authSource'],
-    )
+    URI = _get_mongodb_uri()
+    client = pymongo.MongoClient(URI)
+    return client
 
 
 def _get_mongo_database():
-    return _get_mongodb_client()['datahack-reg']
+    cred = _get_credentials()
+    return _get_mongodb_client()[cred['db']]
 
 
 def get_users_collection():
