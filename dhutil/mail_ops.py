@@ -42,8 +42,8 @@ def _send_batch_email(emails, subject, body, field_name):
         msg=body,
     )
     print("Email sent successfully")
-    # _set_field_true_by_emails(emails, field_name)
-    # print('Marked {} as true for these users on MongoDB\n'.format(field_name))
+    _set_field_true_by_emails(emails, field_name)
+    print('Marked {} as true for these users on MongoDB\n'.format(field_name))
 
 
 ZOHO_MAX_RECIPIENTS = 50
