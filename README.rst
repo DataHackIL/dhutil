@@ -7,7 +7,7 @@ Python utils for DataHack.
 .. code-block:: bash
 
   ~ dhutil mail confirm_stat
-  Emails stas on DataHack 2017 registration:
+  Emails stas on DataHack 2019 registration:
   432 total users in the system.
   415 users got a confirmation email.
 
