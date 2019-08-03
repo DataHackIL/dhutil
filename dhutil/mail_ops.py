@@ -117,8 +117,6 @@ If you need more information about the event visit us at
 You can also read frequently asked questions (and answers) here: 
 {STATIC_WEBSITE}/faq
 
-Finally, you can hit us at contact@datahack.co.il with questions.
-
 
 More information coming soon,
 The DataHack Team'''
