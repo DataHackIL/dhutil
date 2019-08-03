@@ -1,3 +1,3 @@
 """Shared stuff."""
 
-IS_ACCEPTED_FIELD_NAME = 'isAccepted'
+IS_ACCEPTED_FIELD_NAME = 'accepted'

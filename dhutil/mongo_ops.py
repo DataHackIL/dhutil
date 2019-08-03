@@ -47,6 +47,7 @@ def pprint_two_ordered_dicts(name1, odict1, name2, odict2):
 def print_user_stats():
     db = _get_mongo_database()
     users = db['users']
+    print('```\n\n')
     print("{} total users in the system.".format(users.count_documents({})))
     print("{} users got a confirmation email.".format(users.count_documents({CONFIRM_FIELD_NAME: True})))
     pprint_two_ordered_dicts(
@@ -54,11 +55,15 @@ def print_user_stats():
         'Food', key_value_counts('food', users),
     )
     pprint_two_ordered_dicts(
-        'Sleep', key_value_counts('sleep', users),
-        'Transport', key_value_counts('transport', users),
+        'DataLearn', key_value_counts('workshop', users),
+        'Student', key_value_counts('student', users),
     )
     pprint_two_ordered_dicts(
-        'Track', key_value_counts('track', users),
+        'Sleep', key_value_counts('sleep', users),
+        'Hacker', key_value_counts('hacker', users),
+    )
+    pprint_two_ordered_dicts(
+        'Transport', key_value_counts('transport', users),
         'TLV Bus', key_value_counts('bus', users),
     )
     pprint_two_ordered_dicts(
@@ -66,13 +71,10 @@ def print_user_stats():
         'Shirt size', key_value_counts('shirtsize', users),
     )
     pprint_two_ordered_dicts(
-        'Student', key_value_counts('student', users),
-        'Hacker', key_value_counts('hacker', users),
-    )
-    pprint_two_ordered_dicts(
         'Team Status', key_value_counts('teamstatus', users),
         'Newsletter', key_value_counts('newsletter', users),
     )
+    print('```\n')
 
 
 def dump_collection(collection_name, field_names, output_folder_path):
