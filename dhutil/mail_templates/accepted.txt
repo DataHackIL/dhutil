@@ -14,7 +14,7 @@ https://registration.datahack.org.il/whatsapp
 You can also read frequently asked questions (and answers) here:
 {STATIC_WEBSITE}/faq
 And look at our participant info page:
-
+https://www.datahack.org.il/guide
 If you would like to cancel your registration please fill out this form :-( :
 https://forms.gle/LdqZ5BTmmtQEFsPa6
 
