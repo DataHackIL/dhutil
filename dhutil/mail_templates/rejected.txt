@@ -1,0 +1,12 @@
+This message is to inform you that you have unfortunately not been accepted to DataHack {YEAR}.
+We had a massive amount of registrations this year, and we had to limit the amount of participants we accepted!
+We really appreciate your effort and interest in our event, and we encourage you to sign up for next year as well.
+Don’t  let it get to you though, we have plenty of other events for you to participate in!
+Most importantly you can still be part of DataHack 2019 by attending the DataConf conference which takes place during the hackathon:
+https://www.meetup.com/DataHack/events/262952190/
+If you want to get your hands dirty check out or Kaggle group which meets monthly to work on Kaggle competitions:
+https://www.facebook.com/groups/kaggleil/
+Last check out our Meetup to see our other events like the Datatalks series:
+https://www.meetup.com/DataHack/
+Hope to see you soon,
+The DataHack Team

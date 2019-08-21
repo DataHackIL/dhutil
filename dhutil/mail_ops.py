@@ -167,7 +167,7 @@ def send_acceptance_datalearn_emails(sandbox=False):
 def send_acceptance_upgrade_emails(sandbox=False):
     if not sandbox:
         sandbox = FALSE
-    print("Sending acceptance DATALEARN emails to accepted users who didn't get one.")
+    print("Sending acceptance DATALEARN UPGRADE emails to accepted users who didn't get one.")
     users = _get_mongo_database()['users']
     users_to_send = list(users.find(
         filter={
@@ -195,9 +195,8 @@ def send_rejection_upgrade_emails(sandbox=False):
         filter={
             'sandbox': sandbox,
             IS_ACCEPTED_FIELD_NAME: FALSE,
-            IS_ACCEPTED_DATALEARN_FIELD_NAME: True,
-            IS_REJECTED_FIELD_NAME: FALSE,
-            IS_REGISTER_DATALEARN_FIELD_NAME: True,
+            IS_ACCEPTED_DATALEARN_FIELD_NAME: FALSE,
+            IS_REJECTED_FIELD_NAME: True,
             ACCEPT_EMAIL_FIELD_NAME: FALSE,
         },
         projection={'email': True}
