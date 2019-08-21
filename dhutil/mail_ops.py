@@ -1,4 +1,5 @@
 """Python based utilities for DataHack."""
+import re
 
 from dhutil.mongo_utils import (
     _get_mongo_database,
@@ -8,17 +9,30 @@ from dhutil.mail_utils import (
 )
 from dhutil.shared import (
     IS_ACCEPTED_FIELD_NAME,
-)
+    IS_ACCEPTED_DATALEARN_FIELD_NAME,
+    IS_REGISTER_DATALEARN_FIELD_NAME,
+    IS_REJECTED_FIELD_NAME,
+    ACCEPT_EMAIL_FIELD_NAME)
+import pathlib
+
+CURDIR = pathlib.Path(__file__).parent
+TEMPLATES = CURDIR / 'mail_templates'
 
 YEAR = 2019
 STATIC_WEBSITE = 'https://www.datahack.org.il'
 REG_WEBSITE = 'https://registration.datahack.org.il'
+
+INFO = dict(YEAR=YEAR, STATIC_WEBSITE=STATIC_WEBSITE, REG_WEBSITE=REG_WEBSITE)
+ZOHO_MAX_RECIPIENTS = 50
+ZOHO_MAX_DAILY_MAILS = 150
+FALSE = {'$ne': True}
+
 def _print_email_stats():
     users = _get_mongo_database()['users']
     print(f"Emails stats on DataHack {YEAR} registration:")
     print("{} total users in the system.".format(users.count_documents({})))
     print("{} users got a confirmation email.".format(users.count({CONFIRM_FIELD_NAME: True})))
-    print("{} users got an acceptance email.".format(users.count({ACCEPT_FIELD_NAME: True})))
+    print("{} users got an acceptance email.".format(users.count({ACCEPT_EMAIL_FIELD_NAME: True})))
 
 
 def _set_field_true_by_emails(emails, field_name):
@@ -44,10 +58,6 @@ def _send_batch_email(emails, subject, body, field_name):
     print("Email sent successfully")
     _set_field_true_by_emails(emails, field_name)
     print('Marked {} as true for these users on MongoDB\n'.format(field_name))
-
-
-ZOHO_MAX_RECIPIENTS = 50
-ZOHO_MAX_DAILY_MAILS = 150
 
 
 def send_batch_emails(emails, subject, body, field_name):
@@ -102,39 +112,98 @@ def send_confirmation_emails():
         emails, CONFIRM_SUBJECT, CONFIRM_BODY, CONFIRM_FIELD_NAME)
 
 
-ACCEPT_FIELD_NAME = 'acceptance_email'
-ACCEPT_SUBJECT = f"You have been accepted to DataHack {YEAR}!"
-ACCEPT_BODY = (
-f'''This is a message confirming you have been accepted to DataHack {YEAR}!
-If you still don't have a team - that's ok! You don't have to have a team \
-to attend DataHack {YEAR}. However, working together is fun, so take a \
-look at the open teams page and send an email to captains of teams you \
-would like to join:
-{REG_WEBSITE}/mingle
-If you need more information about the event visit us at 
-{STATIC_WEBSITE}/ !
-
-You can also read frequently asked questions (and answers) here: 
-{STATIC_WEBSITE}/faq
+def _get_body(filename):
+    with open(TEMPLATES / filename, 'r') as f:
+        body = f.read().format_map(INFO)
+    body = re.sub(u"(\u2018|\u2019)","",body)
+    return body
 
 
-More information coming soon,
-The DataHack Team'''
-)
-
-
-def send_acceptance_emails():
+def send_acceptance_emails(sandbox=False):
+    if not sandbox:
+        sandbox = FALSE
     _print_email_stats()
     print("Sending acceptance emails to accepted users who didn't get one.")
     users = _get_mongo_database()['users']
     users_to_send = list(users.find(
         filter={
+            'sandbox': sandbox,
             IS_ACCEPTED_FIELD_NAME: True,
-            ACCEPT_FIELD_NAME: {'$ne': True},
+            IS_ACCEPTED_DATALEARN_FIELD_NAME: FALSE,
+            IS_REJECTED_FIELD_NAME: FALSE,
+            IS_REGISTER_DATALEARN_FIELD_NAME: FALSE,
+            ACCEPT_EMAIL_FIELD_NAME: FALSE,
         },
         projection={'email': True}
     ))
     emails = [doc['email'] for doc in users_to_send]
-    print("Found {} users who need them...".format(len(emails)))
-    send_batch_emails(
-        emails, ACCEPT_SUBJECT, ACCEPT_BODY, ACCEPT_FIELD_NAME)
+    print("Found {} relevant users".format(len(emails)))
+    subject = f"You have been accepted to DataHack {YEAR}!"
+    body = _get_body('accepted.txt')
+    send_batch_emails(emails, subject, body, ACCEPT_EMAIL_FIELD_NAME)
+
+def send_acceptance_datalearn_emails(sandbox=False):
+    if not sandbox:
+        sandbox = FALSE
+    print("Sending acceptance DATALEARN emails to accepted users who didn't get one.")
+    users = _get_mongo_database()['users']
+    users_to_send = list(users.find(
+        filter={
+            'sandbox': sandbox,
+            IS_ACCEPTED_FIELD_NAME: FALSE,
+            IS_ACCEPTED_DATALEARN_FIELD_NAME: True,
+            IS_REJECTED_FIELD_NAME: FALSE,
+            IS_REGISTER_DATALEARN_FIELD_NAME: True,
+            ACCEPT_EMAIL_FIELD_NAME: FALSE,
+        },
+        projection={'email': True}
+    ))
+    emails = [doc['email'] for doc in users_to_send]
+    print("Found {} relevant users".format(len(emails)))
+    subject = f"You have been accepted to DataLearn {YEAR}!"
+    body = _get_body('acceptedWorkshop.txt')
+    send_batch_emails(emails, subject, body, ACCEPT_EMAIL_FIELD_NAME)
+
+def send_acceptance_upgrade_emails(sandbox=False):
+    if not sandbox:
+        sandbox = FALSE
+    print("Sending acceptance DATALEARN emails to accepted users who didn't get one.")
+    users = _get_mongo_database()['users']
+    users_to_send = list(users.find(
+        filter={
+            'sandbox': sandbox,
+            IS_ACCEPTED_FIELD_NAME: True,
+            IS_ACCEPTED_DATALEARN_FIELD_NAME: FALSE,
+            IS_REJECTED_FIELD_NAME: FALSE,
+            IS_REGISTER_DATALEARN_FIELD_NAME: True,
+            ACCEPT_EMAIL_FIELD_NAME: FALSE,
+        },
+        projection={'email': True}
+    ))
+    emails = [doc['email'] for doc in users_to_send]
+    print("Found {} relevant users".format(len(emails)))
+    subject = f"You have been accepted to DataHack {YEAR}! Main Competition"
+    body = _get_body('upgrade.txt')
+    send_batch_emails(emails, subject, body, ACCEPT_EMAIL_FIELD_NAME)
+
+def send_rejection_upgrade_emails(sandbox=False):
+    if not sandbox:
+        sandbox = FALSE
+    print("Sending acceptance DATALEARN emails to accepted users who didn't get one.")
+    users = _get_mongo_database()['users']
+    users_to_send = list(users.find(
+        filter={
+            'sandbox': sandbox,
+            IS_ACCEPTED_FIELD_NAME: FALSE,
+            IS_ACCEPTED_DATALEARN_FIELD_NAME: True,
+            IS_REJECTED_FIELD_NAME: FALSE,
+            IS_REGISTER_DATALEARN_FIELD_NAME: True,
+            ACCEPT_EMAIL_FIELD_NAME: FALSE,
+        },
+        projection={'email': True}
+    ))
+    emails = [doc['email'] for doc in users_to_send]
+    print("Found {} relevant users".format(len(emails)))
+    subject = f"Sorry! You have not been accepted DataHack {YEAR}!"
+    body = _get_body('rejected.txt')
+    send_batch_emails(emails, subject, body, ACCEPT_EMAIL_FIELD_NAME)

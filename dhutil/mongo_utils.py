@@ -42,6 +42,6 @@ def _get_mongo_database():
     return _get_mongodb_client()[cred['db']]
 
 
-def get_users_collection():
+def get_users_collection(sandbox=False):
     """Returns the DataHack users collection."""
     return _get_mongo_database()['users']

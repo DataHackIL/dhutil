@@ -2,6 +2,7 @@
 
 import os
 import csv
+import re
 from subprocess import call
 from itertools import zip_longest
 
@@ -16,7 +17,7 @@ from dhutil.mail_ops import CONFIRM_FIELD_NAME
 
 def pprint_ordered_dict(odict):
     max_key_len = max([len(str(key)) for key in odict])
-    item_fmt_str = '  {'+':{}'.format(max_key_len+1)+'}: {}'
+    item_fmt_str = '  {' + ':{}'.format(max_key_len + 1) + '}: {}'
     # print(item_fmt_str)
     for key in odict:
         print(item_fmt_str.format(key, odict[key]))
@@ -27,12 +28,12 @@ def pprint_two_ordered_dicts(name1, odict1, name2, odict2):
     max_key_len2 = max([len(str(key)) for key in odict2])
     max_val_len1 = max([len(str(odict1[key])) for key in odict1])
     header_fmt_str = '  ={}={' + ':{}'.format(
-        max_key_len1+max_val_len1+1)+'}={}='
+        max_key_len1 + max_val_len1 + 1) + '}={}='
     # print(header_fmt_str)
-    line_fmt_str = '  {'+':{}'.format(
-        max_key_len1+1)+'}: {'+':{}'.format(
-            max_val_len1+1)+'}     {'+':{}'.format(
-                max_key_len2+1)+'}: {}'
+    line_fmt_str = '  {' + ':{}'.format(
+        max_key_len1 + 1) + '}: {' + ':{}'.format(
+        max_val_len1 + 1) + '}     {' + ':{}'.format(
+        max_key_len2 + 1) + '}: {}'
     # print(line_fmt_str)
     print()
     print(header_fmt_str.format(name1, '', name2))
@@ -89,7 +90,7 @@ def dump_collection(collection_name, field_names, output_folder_path):
         collection_name))
     with tqdm(total=count) as pbar:
         with open(fpath, 'w+') as outfile:
-            writer = csv.DictWriter(outfile, fieldnames=field_names)
+            writer = csv.DictWriter(outfile, fieldnames=field_names, dialect=csv.unix_dialect)
             writer.writeheader()
             for x in cursor:
                 try:
@@ -99,12 +100,14 @@ def dump_collection(collection_name, field_names, output_folder_path):
                     print("problem encoding the following row:")
                     print(x)
 
+
 USERS_FIELD_NAMES = [
     'first_name', 'last_name', 'gender', 'email', 'degree', 'field',
     'institution', 'teamstatus', 'team', 'workshop', 'bus', 'hacker',
-    'shirttype', 'shirtsize', 'food', 'sleep', 'student', 'class', 'transport'
-    'newsletter', 'age', 'phone', 'regDate', 'tags',
+    'shirttype', 'shirtsize', 'food', 'sleep', 'student', 'transport',
+    'age', 'regDate',
 ]
+
 
 def dump_users_collection(output_folder_path):
     """Dump the users collection."""
@@ -115,6 +118,7 @@ TEAMS_FIELD_NAMES = [
     'team_name', 'admin_email', 'members', 'isClosed', 'idea', 'challenge',
     'dataset', 'lookingText', 'tags',
 ]
+
 
 def dump_teams_collection(output_folder_path):
     """Dump the teams collection."""

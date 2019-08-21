@@ -1,0 +1,23 @@
+You have been accepted to DataHack {YEAR} for the DataLearn track!
+The enitre agenda of the DataLearn program can be found here:
+{STATIC_WEBSITE}/datalearn
+
+If you still don't have a team - that's ok! You don't have to have a team to attend DataHack {YEAR}. However, working together is fun, so take a look at the open teams page and send an email to captains of teams you would like to join:
+{REG_WEBSITE}/mingle
+If you need more information about the event visit us at
+{STATIC_WEBSITE}/ !
+
+Also, make sure to attend the prep event which you can find here:
+https://www.meetup.com/DataHack/events/263740425/
+If you are coming to the event not from Tel Aviv or Jerusalem and would like a ride fill out this form:
+https://forms.gle/HczQf7jC5WpLUT129
+To get more info closer to the event join our whatsapp group:
+https://registration.datahack.org.il/whatsapp
+You can also read frequently asked questions (and answers) here:
+{STATIC_WEBSITE}/faq
+And look at our participant info page:
+If you would like to cancel your registration please fill out this form :-( :
+https://forms.gle/LdqZ5BTmmtQEFsPa6
+
+More information coming soon,
+The DataHack Team
